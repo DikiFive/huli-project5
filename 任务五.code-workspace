@@ -1,0 +1,24 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "files.associations": {
+            "buzzer.h": "c",
+            "ir.h": "c",
+            "uart.h": "c",
+            "REGX52.H": "cpp"
+        }
+    },
+    "extensions": {},
+    "launch": {
+        "configurations": [],
+        "compounds": []
+    },
+    "tasks": {
+        "version": "2.0.0",
+        "tasks": []
+    }
+}

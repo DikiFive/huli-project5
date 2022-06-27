@@ -1,0 +1,107 @@
+{
+  "name": "任务五",
+  "type": "C51",
+  "mode": "Target 1",
+  "toolchain": "Keil_C51",
+  "uploader": "stcgal",
+  "dependenceList": [
+    {
+      "groupName": "custom",
+      "depList": [
+        {
+          "name": "default",
+          "sourceDirList": [],
+          "libList": [],
+          "incList": [
+            "./../../../software/keil5/C51/INC/Atmel"
+          ],
+          "defineList": []
+        }
+      ]
+    }
+  ],
+  "compileConfig": {
+    "options": "null"
+  },
+  "srcDirs": [],
+  "virtualFolder": {
+    "name": "<virtual_root>",
+    "files": [],
+    "folders": [
+      {
+        "name": "Source Group 1",
+        "files": [
+          {
+            "path": "AT24C02.c"
+          },
+          {
+            "path": "Buzzer.c"
+          },
+          {
+            "path": "dk.c"
+          },
+          {
+            "path": "I2C.c"
+          },
+          {
+            "path": "IR.c"
+          },
+          {
+            "path": "LCD1602.c"
+          },
+          {
+            "path": "main.c"
+          },
+          {
+            "path": "STARTUP.A51"
+          },
+          {
+            "path": "UART.c"
+          }
+        ],
+        "folders": []
+      }
+    ]
+  },
+  "excludeList": [],
+  "outDir": "build",
+  "deviceName": null,
+  "packDir": null,
+  "uploadConfig": {
+    "bin": "",
+    "eepromImgPath": "null",
+    "extraOptions": "",
+    "options": ".eide/stc.flash.json"
+  },
+  "uploadConfigMap": {},
+  "miscInfo": {
+    "uid": "76c95fe2c3814255a35ea62099849bac"
+  },
+  "targets": {
+    "Target 1": {
+      "compileConfig": {
+        "options": "null"
+      },
+      "uploader": "stcgal",
+      "uploadConfig": {
+        "bin": "",
+        "eepromImgPath": "null",
+        "extraOptions": "",
+        "options": ".eide/stc.flash.json"
+      },
+      "uploadConfigMap": {},
+      "toolchain": "Keil_C51",
+      "custom_dep": {
+        "name": "default",
+        "sourceDirList": [],
+        "libList": [],
+        "incList": [
+          "../../../software/keil5/C51/INC/Atmel"
+        ],
+        "defineList": []
+      },
+      "excludeList": []
+    }
+  },
+  "version": "3.1"
+}
