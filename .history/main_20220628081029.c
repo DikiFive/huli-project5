@@ -36,7 +36,6 @@ struct md
 	u8 TimeSetSelect;
 	u8 AlarmSetSelect;
 	u8 TimeSetFlashFlag;
-	u8 Count;
 };
 struct md mod;
 
@@ -52,6 +51,7 @@ void main()
 {
 	IrInit();
 	LCD_Init();
+
 	Timer0_Init();
 	LCD_ShowString(1, 5, "-");
 	LCD_ShowString(1, 8, "-");
@@ -516,22 +516,17 @@ void ReadIr() interrupt 0
 void Timer0_Routine() interrupt 1 //中断函数,一般放在main.c里
 {
 	static unsigned int T0Count; //在中断函数内是局部变量，中断函数外是全局变量
-	static unsigned int T1Count;
+
 	TH0 = 64535 / 256; //赋初值
 	TL0 = 64535 % 256;
 	T0Count++;
-	T1Count++;
 	//定时器过一秒 clock.Sec++
 	if (T0Count >= 1000)
 	{
 		T0Count = 0;
-		// mod.TimeSetFlashFlag = !mod.TimeSetFlashFlag; //取反
+		mod.TimeSetFlashFlag = !mod.TimeSetFlashFlag; //取反
 		clock.Sec++;
 		TimeBase();
-	}
-	if (T1Count >= 500)
-	{
-		mod.TimeSetFlashFlag = !mod.TimeSetFlashFlag; //取反
 	}
 }
 
