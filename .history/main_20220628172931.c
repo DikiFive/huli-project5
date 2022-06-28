@@ -4,7 +4,7 @@
 #include "UART.h"
 #include "Buzzer.h"
 #include "LCD1602.h"
-#include "AT24C02.h" //aa
+#include "AT24C02.h"//
 //全局变量
 struct ir IRs; //红外相关变量
 struct ks kn;  //键码位
