@@ -2,7 +2,7 @@
 #include "IR.h"
 
 /**
- * @brief  红外专属延迟——i=1时延迟约为10us
+ * @brief  红外专属延迟——i=1时延迟yue'wei
  * @param  i 延迟时长
  */
 void IR_delay(u16 i)

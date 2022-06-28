@@ -9,8 +9,7 @@
             "buzzer.h": "c",
             "ir.h": "c",
             "uart.h": "c",
-            "REGX52.H": "cpp",
-            "INTRINS.H": "cpp"
+            "REGX52.H": "cpp"
         }
     },
     "extensions": {},

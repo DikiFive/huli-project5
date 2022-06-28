@@ -369,7 +369,7 @@ void showtime()
  */
 void TimeBase()
 {
-	static u8 t; //闰平年判断位
+	static u8 t;//
 	//大于60 clock.Min++
 	if (clock.Sec >= 60)
 	{

@@ -296,9 +296,8 @@ void Timer0_Init() //定时器： 初始化
 	EA = 1;			   //总中断允许位
 }
 /*TF0 // T0溢出中断请求标志位
-计数溢出时由硬件自动置TF0为1。CPU响应中断后TF0由硬件自动清0
-/*定时器中断函数模板*/
-/*
+计数溢出时由硬件自动置TF1为1。CPU响应中断后TF1由硬件自动清0
+/*定时器中断函数模板*\/
 void Timer0_Routine() interrupt 1
 {
 	static unsigned int T0Count;

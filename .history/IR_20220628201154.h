@@ -19,3 +19,4 @@ void IrInit();
 u8 Identify_Num(u8 IR_sum);
 
 #endif
+

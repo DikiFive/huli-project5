@@ -360,7 +360,6 @@ void showtime()
 	{
 		LCD_ShowString(1, 16, "P");
 	}
-	//当天星期数显示
 	LCD_ShowNum(1, 12, clock.week, 2);
 }
 
@@ -369,7 +368,7 @@ void showtime()
  */
 void TimeBase()
 {
-	static u8 t; //闰平年判断位
+	static u8 t;
 	//大于60 clock.Min++
 	if (clock.Sec >= 60)
 	{

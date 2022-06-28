@@ -123,7 +123,7 @@ void IRs_int()
  */
 void clock_set()
 {
-	LCD_ShowString(2, 11, "alarms");	   //模式显示
+	LCD_ShowString(2, 11, "alarms");
 	if (kn.MatrixKey == 2 || kn.Num == 96) //按键2按下
 	{
 
@@ -172,7 +172,7 @@ void clock_set()
 			break;
 		}
 	}
-	//更新显示，根据mod.AlarmSetSelect和mod.TimeSetFlashFlag判断可完成闪烁功能
+	//更新显示，根据mod.TimeSetSelect和mod.TimeSetFlashFlag判断可完成闪烁功能
 	if (mod.AlarmSetSelect == 0 && mod.TimeSetFlashFlag == 1)
 	{
 		LCD_ShowString(2, 1, "  ");
@@ -189,7 +189,6 @@ void clock_set()
 	{
 		LCD_ShowNum(2, 4, alarm.min, 2);
 	}
-	//静态显示
 	LCD_ShowNum(1, 1, clock.Year, 4);
 	LCD_ShowNum(1, 6, clock.Mon, 2);
 	LCD_ShowNum(1, 9, clock.Day, 2);
@@ -201,7 +200,7 @@ void clock_set()
  */
 void TimeSet()
 {
-	LCD_ShowString(2, 11, "change");	//模式显示
+	LCD_ShowString(2, 11, "change");
 	if (kn.KeyNum == 2 || kn.Num == 96) //按键2按下
 	{
 
@@ -342,14 +341,12 @@ void TimeSet()
  */
 void showtime()
 {
-	//静态显示
 	LCD_ShowNum(1, 1, clock.Year, 4);
 	LCD_ShowNum(1, 6, clock.Mon, 2);
 	LCD_ShowNum(1, 9, clock.Day, 2);
 	LCD_ShowNum(2, 1, clock.Hour, 2);
 	LCD_ShowNum(2, 4, clock.Min, 2);
 	LCD_ShowNum(2, 7, clock.Sec, 2);
-	//模式判断
 	LCD_ShowString(2, 11, "normal");
 	//闰平年判断
 	if ((clock.Year % 4 == 0 && clock.Year % 100 != 0) || clock.Year % 400 == 0) //判断闰平年
@@ -360,7 +357,6 @@ void showtime()
 	{
 		LCD_ShowString(1, 16, "P");
 	}
-	//当天星期数显示
 	LCD_ShowNum(1, 12, clock.week, 2);
 }
 
@@ -369,7 +365,7 @@ void showtime()
  */
 void TimeBase()
 {
-	static u8 t; //闰平年判断位
+	static u8 t;
 	//大于60 clock.Min++
 	if (clock.Sec >= 60)
 	{

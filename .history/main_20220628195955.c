@@ -1,13 +1,13 @@
 #include "reg52.h"	 //此文件中定义了单片机的一些特殊功能寄存器
 #include "IR.h"		 //红外函数头文件
 #include "dk.h"		 //常用函数
-#include "UART.h"	 //串口初始化
-#include "Buzzer.h"	 //蜂鸣器使用函数
-#include "LCD1602.h" //LCD1602相关使用函数
-#include "AT24C02.h" //掉电记忆使用寄存器相关函数
+#include "UART.h"	 //
+#include "Buzzer.h"	 //
+#include "LCD1602.h" //
+#include "AT24C02.h" //aa
 //全局变量
 struct ir IRs; //红外相关变量
-struct ks kn;  //键位码相关变量
+struct ks kn;  //键码位
 struct time
 {
 	u16 Year;
@@ -21,13 +21,15 @@ struct time
 	u8 week;
 };
 struct time clock = {2022, 6, 27, 16, 39, 50, 0, 0}; //时间相关变量
-struct ck											 //闹钟相关变量
+//闹钟相关变量
+struct ck
 {
 	u8 hour;
 	u8 min;
 };
 struct ck alarm = {8, 0};
-struct md //模式码相关变量
+//模式吗相关变量
+struct md
 {
 	u8 time;
 	u8 alarm;
@@ -38,13 +40,13 @@ struct md //模式码相关变量
 };
 struct md mod;
 //声明函数
-void IRs_int();	  //红外命令解析
-void showtime();  //展示时间
-void ReadTime();  //读取at24c02数据
-void WriteTime(); //写入at24c02数据
-void TimeBase();  //时间进制
-void TimeSet();	  //时钟设置
-void clock_set(); //闹钟设置
+void IRs_int();
+void showtime();
+void ReadTime();
+void WriteTime();
+void TimeBase();
+void TimeSet();
+void clock_set();
 //主函数入口
 void main()
 {
@@ -70,19 +72,19 @@ void main()
 			if (mod.time == 0) //模式0到模式1
 			{
 				mod.time = 1;
-				mod.TimeSetSelect = 0; //时钟设置选择位
-			}						   //功能切换
-			else if (mod.time == 1)	   //模式1到模式2
+				mod.TimeSetSelect = 0;
+			}						//功能切换
+			else if (mod.time == 1) //模式1到模式2
 			{
 				mod.time = 2;
-				mod.AlarmSetSelect = 0; //闹钟设置选择位
+				mod.AlarmSetSelect = 0;
 			}
 			else if (mod.time == 2) //模式2到模式0
 			{
 				mod.time = 0;
 			}
 		}
-		//模式判断
+		//判断模式
 		switch (mod.time) //根据不同的功能执行不同的函数
 		{
 		case 0:
@@ -98,7 +100,7 @@ void main()
 			break;
 		}
 		// 闹钟判断
-		if (alarm.hour == clock.Hour && alarm.min == clock.Min) //当闹钟时间与时钟时间相等时响
+		if (alarm.hour == clock.Hour && alarm.min == clock.Min) //当闹钟时间与定时器相等时响
 		{
 			Buzzer_Time(100);
 		}
@@ -123,7 +125,7 @@ void IRs_int()
  */
 void clock_set()
 {
-	LCD_ShowString(2, 11, "alarms");	   //模式显示
+	LCD_ShowString(2, 11, "alarms");
 	if (kn.MatrixKey == 2 || kn.Num == 96) //按键2按下
 	{
 
@@ -172,7 +174,7 @@ void clock_set()
 			break;
 		}
 	}
-	//更新显示，根据mod.AlarmSetSelect和mod.TimeSetFlashFlag判断可完成闪烁功能
+	//更新显示，根据mod.TimeSetSelect和mod.TimeSetFlashFlag判断可完成闪烁功能
 	if (mod.AlarmSetSelect == 0 && mod.TimeSetFlashFlag == 1)
 	{
 		LCD_ShowString(2, 1, "  ");
@@ -189,7 +191,6 @@ void clock_set()
 	{
 		LCD_ShowNum(2, 4, alarm.min, 2);
 	}
-	//静态显示
 	LCD_ShowNum(1, 1, clock.Year, 4);
 	LCD_ShowNum(1, 6, clock.Mon, 2);
 	LCD_ShowNum(1, 9, clock.Day, 2);
@@ -201,7 +202,7 @@ void clock_set()
  */
 void TimeSet()
 {
-	LCD_ShowString(2, 11, "change");	//模式显示
+	LCD_ShowString(2, 11, "change");
 	if (kn.KeyNum == 2 || kn.Num == 96) //按键2按下
 	{
 
@@ -342,14 +343,12 @@ void TimeSet()
  */
 void showtime()
 {
-	//静态显示
 	LCD_ShowNum(1, 1, clock.Year, 4);
 	LCD_ShowNum(1, 6, clock.Mon, 2);
 	LCD_ShowNum(1, 9, clock.Day, 2);
 	LCD_ShowNum(2, 1, clock.Hour, 2);
 	LCD_ShowNum(2, 4, clock.Min, 2);
 	LCD_ShowNum(2, 7, clock.Sec, 2);
-	//模式判断
 	LCD_ShowString(2, 11, "normal");
 	//闰平年判断
 	if ((clock.Year % 4 == 0 && clock.Year % 100 != 0) || clock.Year % 400 == 0) //判断闰平年
@@ -360,7 +359,6 @@ void showtime()
 	{
 		LCD_ShowString(1, 16, "P");
 	}
-	//当天星期数显示
 	LCD_ShowNum(1, 12, clock.week, 2);
 }
 
@@ -369,7 +367,7 @@ void showtime()
  */
 void TimeBase()
 {
-	static u8 t; //闰平年判断位
+	static u8 t;
 	//大于60 clock.Min++
 	if (clock.Sec >= 60)
 	{

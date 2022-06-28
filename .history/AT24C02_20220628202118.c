@@ -40,5 +40,5 @@ unsigned char AT24C02_ReadByte(unsigned char WordAddress)
 	Data = I2C_ReceiveByte();			  //接收到的数据赋值给Data
 	I2C_SendAck(1);						  //确认
 	I2C_Stop();							  // I2C停止
-	return Data;						  //返回数据Data
+	return Data;
 }

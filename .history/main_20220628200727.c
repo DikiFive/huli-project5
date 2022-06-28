@@ -342,14 +342,12 @@ void TimeSet()
  */
 void showtime()
 {
-	//静态显示
 	LCD_ShowNum(1, 1, clock.Year, 4);
 	LCD_ShowNum(1, 6, clock.Mon, 2);
 	LCD_ShowNum(1, 9, clock.Day, 2);
 	LCD_ShowNum(2, 1, clock.Hour, 2);
 	LCD_ShowNum(2, 4, clock.Min, 2);
 	LCD_ShowNum(2, 7, clock.Sec, 2);
-	//模式判断
 	LCD_ShowString(2, 11, "normal");
 	//闰平年判断
 	if ((clock.Year % 4 == 0 && clock.Year % 100 != 0) || clock.Year % 400 == 0) //判断闰平年
@@ -360,7 +358,6 @@ void showtime()
 	{
 		LCD_ShowString(1, 16, "P");
 	}
-	//当天星期数显示
 	LCD_ShowNum(1, 12, clock.week, 2);
 }
 
@@ -369,7 +366,7 @@ void showtime()
  */
 void TimeBase()
 {
-	static u8 t; //闰平年判断位
+	static u8 t;
 	//大于60 clock.Min++
 	if (clock.Sec >= 60)
 	{

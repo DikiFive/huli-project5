@@ -2,7 +2,7 @@
 #include "IR.h"
 
 /**
- * @brief  红外专属延迟——i=1时延迟约为10us
+ * @brief  红外专属延迟
  * @param  i 延迟时长
  */
 void IR_delay(u16 i)
@@ -24,7 +24,7 @@ void IrInit()
 }
 
 /**
- * @brief  识别红外命令解析为10进制数
+ * @brief  识别红外命令解析wei
  * @param  IR_sum 命令码
  */
 u8 Identify_Num(u8 IR_sum)
@@ -77,12 +77,3 @@ u8 Identify_Num(u8 IR_sum)
     }
     return Num_command;
 }
-// u8 IR_command[7][3] = {
-// 	{45, 46, 47}, // power,mode,47
-// 	{44, 40, 43}, // stop,<<,>>
-// 	{7, 15, 9},	  // EQ,vol-.vol+
-// 	{16, 19, 13}, // 0,RPT,U/SD
-// 	{12, 18, 64}, // 1,2,3
-// 	{8, 22, 60},  // 4,5,6
-// 	{42, 52, 50}, // 7,8,9
-// };
