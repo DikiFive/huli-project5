@@ -5,9 +5,9 @@
 #include "Buzzer.h"
 #include "LCD1602.h"
 #include "AT24C02.h"
-//全局变量
-struct ir IRs; //红外相关变量
-struct ks kn;  //键码位
+
+struct ir IRs;//红外相关变量
+struct ks kn;//键码位
 struct time
 {
 	u16 Year;
@@ -20,15 +20,15 @@ struct time
 	u8 y2;
 	u8 week;
 };
-struct time clock = {2022, 6, 27, 16, 39, 50, 0, 0}; //时间相关变量
-//闹钟相关变量
+struct time clock = {2022, 6, 27, 16, 39, 50, 0, 0};
+
 struct ck
 {
 	u8 hour;
 	u8 min;
 };
 struct ck alarm = {8, 0};
-//模式吗相关变量
+
 struct md
 {
 	u8 time;
@@ -39,7 +39,7 @@ struct md
 	u8 Count;
 };
 struct md mod;
-//声明函数
+
 void IRs_int();
 void showtime();
 void ReadTime();
@@ -47,59 +47,55 @@ void WriteTime();
 void TimeBase();
 void TimeSet();
 void clock_set();
-//主函数入口
+
 void main()
 {
-	//初始化
-	IrInit();	   //红外初始化
-	LCD_Init();	   // LCD1602初始化
-	Timer0_Init(); //定时器初始化
-	UART_Init();   //串口初始化
-	//静态显示
+	IrInit();
+	LCD_Init();
+	Timer0_Init();
 	LCD_ShowString(1, 5, "-");
 	LCD_ShowString(1, 8, "-");
 	LCD_ShowString(2, 3, ":");
 	LCD_ShowString(2, 6, ":");
-	//从AT24C02读取时间
+	UART_Init();
 	ReadTime();
 	while (1)
 	{
-		IRs_int(); //红外数据解析初始化
-		//基姆拉尔森计算公式——计算星期数
+		IRs_int();
 		clock.week = (clock.Day + 2 * clock.Mon + 3 * (clock.Mon + 1) / 5 + clock.Year + clock.Year / 4 - clock.Year / 100 + clock.Year / 400 + 1) % 7;
-		if (kn.KeyNum == 1 || kn.Num == 69) //按键1按下或者红外按下mode
+		if (kn.KeyNum == 1 || kn.Num == 69) //按键1按下
 		{
 			if (mod.time == 0) //模式0到模式1
 			{
 				mod.time = 1;
 				mod.TimeSetSelect = 0;
 			}						//功能切换
-			else if (mod.time == 1) //模式1到模式2
+			else if (mod.time == 1) //模式1到模式0
 			{
 				mod.time = 2;
 				mod.AlarmSetSelect = 0;
 			}
-			else if (mod.time == 2) //模式2到模式0
+			else if (mod.time == 2)
 			{
 				mod.time = 0;
 			}
 		}
-		//判断模式
+
 		switch (mod.time) //根据不同的功能执行不同的函数
 		{
 		case 0:
-			showtime();	 //展示时钟
-			TimeBase();	 //计算时间进制
-			WriteTime(); //将时间数据写入AT24C02
+			showtime();
+			TimeBase(); //计算时间进制
+			WriteTime();
 			break;
 		case 1:
-			TimeSet(); // mode1:时间设置
+			TimeSet();
 			break;
 		case 2:
-			clock_set(); // mode2:闹钟设置
+			clock_set();
 			break;
 		}
-		// 闹钟判断
+
 		if (alarm.hour == clock.Hour && alarm.min == clock.Min) //当闹钟时间与定时器相等时响
 		{
 			Buzzer_Time(100);
@@ -112,17 +108,14 @@ void main()
  */
 void IRs_int()
 {
-	IRs.IR_sum = (IRs.IrValue[2] / 16) * 10 + (IRs.IrValue[2] % 16); //键码值
-	IRs.IR_num = Identify_Num(IRs.IR_sum);							 //转化成数字
-	IRs.IrValue[2] = 0;												 //置零
-	kn.Num = IRs.IR_num;											 //获取红外command
-	kn.KeyNum = Key();												 //获取独立按键键位数据
-	kn.MatrixKey = MatrixKey();										 //获取矩阵按键键位数据
+	IRs.IR_sum = (IRs.IrValue[2] / 16) * 10 + (IRs.IrValue[2] % 16);
+	IRs.IR_num = Identify_Num(IRs.IR_sum);
+	IRs.IrValue[2] = 0;
+	kn.Num = IRs.IR_num;
+	kn.KeyNum = Key(); //获取矩阵按键键位数据
+	kn.MatrixKey = MatrixKey();
 }
 
-/**
- * @brief  闹钟设置
- */
 void clock_set()
 {
 	LCD_ShowString(2, 11, "alarms");
@@ -139,16 +132,16 @@ void clock_set()
 		{
 		case 0:
 			alarm.hour++;
-			if (alarm.hour > 23)
+			if (alarm.hour > 24)
 			{
-				alarm.hour = 0;
+				alarm.hour = 23;
 			}
 			break;
 		case 1:
 			alarm.min++;
-			if (alarm.min > 59)
+			if (alarm.min > 60)
 			{
-				alarm.min = 0;
+				alarm.min = 59;
 			}
 			break;
 		}
@@ -160,16 +153,16 @@ void clock_set()
 		{
 		case 0:
 			alarm.hour--;
-			if (alarm.hour > 23)
+			if (alarm.hour > 24)
 			{
-				alarm.hour = 23;
+				alarm.hour = 0;
 			}
 			break;
 		case 1:
 			alarm.min--;
 			if (alarm.min > 60)
 			{
-				alarm.min = 59;
+				alarm.min = 0;
 			}
 			break;
 		}
@@ -196,7 +189,6 @@ void clock_set()
 	LCD_ShowNum(1, 9, clock.Day, 2);
 	LCD_ShowNum(2, 7, clock.Sec, 2);
 }
-
 /**
  * @brief  时间设置
  */
@@ -218,27 +210,31 @@ void TimeSet()
 			clock.Year++;
 			break;
 		case 1:
-			clock.Mon++;
-			if (clock.Mon > 12)
+			clock.Mon;
+			if (clock.Mon == 0)
 			{
-				clock.Mon = 1;
+				clock.Mon = 12;
 			}
 			break;
 		case 2:
 			clock.Day++;
+			if (clock.Day == 0)
+			{
+				clock.Day = 28;
+			}
 			break;
 		case 3:
 			clock.Hour++;
-			if (clock.Hour > 23)
+			if (clock.Hour > 24)
 			{
-				clock.Hour = 0;
+				clock.Hour = 23;
 			}
 			break;
 		case 4:
 			clock.Min++;
-			if (clock.Min > 59)
+			if (clock.Min > 60)
 			{
-				clock.Min = 0;
+				clock.Min = 59;
 			}
 			break;
 		case 5:
@@ -270,7 +266,7 @@ void TimeSet()
 			break;
 		case 3:
 			clock.Hour--;
-			if (clock.Hour > 23)
+			if (clock.Hour > 24)
 			{
 				clock.Hour = 23;
 			}
@@ -350,7 +346,6 @@ void showtime()
 	LCD_ShowNum(2, 4, clock.Min, 2);
 	LCD_ShowNum(2, 7, clock.Sec, 2);
 	LCD_ShowString(2, 11, "normal");
-	//闰平年判断
 	if ((clock.Year % 4 == 0 && clock.Year % 100 != 0) || clock.Year % 400 == 0) //判断闰平年
 	{
 		LCD_ShowString(1, 16, "R");
@@ -432,7 +427,7 @@ void TimeBase()
 		}
 	}
 	//判断月份是否进入下一年
-	if (clock.Mon > 12)
+	if (clock.Mon > 12 && clock.Mon > 0)
 	{
 		clock.Year++;
 		clock.Mon = 1;
@@ -539,7 +534,7 @@ void Timer0_Routine() interrupt 1 //中断函数,一般放在main.c里
 		mod.TimeSetFlashFlag = !mod.TimeSetFlashFlag; //取反
 	}
 }
-//串口中断
+
 void UART_Routine() interrupt 4
 {
 	if (RI == 1) //如果接收标志位为1，接收到了数据
@@ -575,7 +570,6 @@ void ReadTime()
 	Delay(5);
 	clock.Year = (clock.y1 * 100) + clock.y2; //计算clock.Year
 }
-
 /**
  * @brief  写入at24c02时间数据
  */

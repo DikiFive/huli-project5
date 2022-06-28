@@ -48,6 +48,7 @@ void TimeBase();
 void TimeSet();
 void clock_set();
 //主函数入口
+
 void main()
 {
 	//初始化
@@ -88,15 +89,15 @@ void main()
 		switch (mod.time) //根据不同的功能执行不同的函数
 		{
 		case 0:
-			showtime();	 //展示时钟
-			TimeBase();	 //计算时间进制
-			WriteTime(); //将时间数据写入AT24C02
+			showtime();
+			TimeBase(); //计算时间进制
+			WriteTime();
 			break;
 		case 1:
-			TimeSet(); // mode1:时间设置
+			TimeSet();
 			break;
 		case 2:
-			clock_set(); // mode2:闹钟设置
+			clock_set();
 			break;
 		}
 		// 闹钟判断
@@ -119,7 +120,6 @@ void IRs_int()
 	kn.KeyNum = Key();												 //获取独立按键键位数据
 	kn.MatrixKey = MatrixKey();										 //获取矩阵按键键位数据
 }
-
 /**
  * @brief  闹钟设置
  */
@@ -139,16 +139,16 @@ void clock_set()
 		{
 		case 0:
 			alarm.hour++;
-			if (alarm.hour > 23)
+			if (alarm.hour > 24)
 			{
-				alarm.hour = 0;
+				alarm.hour = 23;
 			}
 			break;
 		case 1:
 			alarm.min++;
-			if (alarm.min > 59)
+			if (alarm.min > 60)
 			{
-				alarm.min = 0;
+				alarm.min = 59;
 			}
 			break;
 		}
@@ -160,16 +160,16 @@ void clock_set()
 		{
 		case 0:
 			alarm.hour--;
-			if (alarm.hour > 23)
+			if (alarm.hour > 24)
 			{
-				alarm.hour = 23;
+				alarm.hour = 0;
 			}
 			break;
 		case 1:
 			alarm.min--;
 			if (alarm.min > 60)
 			{
-				alarm.min = 59;
+				alarm.min = 0;
 			}
 			break;
 		}
@@ -196,7 +196,6 @@ void clock_set()
 	LCD_ShowNum(1, 9, clock.Day, 2);
 	LCD_ShowNum(2, 7, clock.Sec, 2);
 }
-
 /**
  * @brief  时间设置
  */
@@ -218,27 +217,31 @@ void TimeSet()
 			clock.Year++;
 			break;
 		case 1:
-			clock.Mon++;
-			if (clock.Mon > 12)
+			clock.Mon;
+			if (clock.Mon == 0)
 			{
-				clock.Mon = 1;
+				clock.Mon = 12;
 			}
 			break;
 		case 2:
 			clock.Day++;
+			if (clock.Day == 0)
+			{
+				clock.Day = 28;
+			}
 			break;
 		case 3:
 			clock.Hour++;
-			if (clock.Hour > 23)
+			if (clock.Hour > 24)
 			{
-				clock.Hour = 0;
+				clock.Hour = 23;
 			}
 			break;
 		case 4:
 			clock.Min++;
-			if (clock.Min > 59)
+			if (clock.Min > 60)
 			{
-				clock.Min = 0;
+				clock.Min = 59;
 			}
 			break;
 		case 5:
@@ -270,7 +273,7 @@ void TimeSet()
 			break;
 		case 3:
 			clock.Hour--;
-			if (clock.Hour > 23)
+			if (clock.Hour > 24)
 			{
 				clock.Hour = 23;
 			}
@@ -432,7 +435,7 @@ void TimeBase()
 		}
 	}
 	//判断月份是否进入下一年
-	if (clock.Mon > 12)
+	if (clock.Mon > 12 && clock.Mon > 0)
 	{
 		clock.Year++;
 		clock.Mon = 1;
@@ -575,7 +578,6 @@ void ReadTime()
 	Delay(5);
 	clock.Year = (clock.y1 * 100) + clock.y2; //计算clock.Year
 }
-
 /**
  * @brief  写入at24c02时间数据
  */

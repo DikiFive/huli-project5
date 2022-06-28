@@ -575,7 +575,6 @@ void ReadTime()
 	Delay(5);
 	clock.Year = (clock.y1 * 100) + clock.y2; //计算clock.Year
 }
-
 /**
  * @brief  写入at24c02时间数据
  */

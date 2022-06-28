@@ -196,7 +196,6 @@ void clock_set()
 	LCD_ShowNum(1, 9, clock.Day, 2);
 	LCD_ShowNum(2, 7, clock.Sec, 2);
 }
-
 /**
  * @brief  时间设置
  */
@@ -575,7 +574,6 @@ void ReadTime()
 	Delay(5);
 	clock.Year = (clock.y1 * 100) + clock.y2; //计算clock.Year
 }
-
 /**
  * @brief  写入at24c02时间数据
  */

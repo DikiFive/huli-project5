@@ -88,15 +88,15 @@ void main()
 		switch (mod.time) //根据不同的功能执行不同的函数
 		{
 		case 0:
-			showtime();	 //展示时钟
-			TimeBase();	 //计算时间进制
-			WriteTime(); //将时间数据写入AT24C02
+			showtime();//展示时钟
+			TimeBase(); //计算时间进制
+			WriteTime();//将时间数据写入AT24C02
 			break;
 		case 1:
-			TimeSet(); // mode1:时间设置
+			TimeSet();//mode1:时间设置
 			break;
 		case 2:
-			clock_set(); // mode2:闹钟设置
+			clock_set();//mode2
 			break;
 		}
 		// 闹钟判断
@@ -106,7 +106,6 @@ void main()
 		}
 	}
 }
-
 /**
  * @brief  红外数据解析初始化
  */
@@ -119,7 +118,6 @@ void IRs_int()
 	kn.KeyNum = Key();												 //获取独立按键键位数据
 	kn.MatrixKey = MatrixKey();										 //获取矩阵按键键位数据
 }
-
 /**
  * @brief  闹钟设置
  */
@@ -196,7 +194,6 @@ void clock_set()
 	LCD_ShowNum(1, 9, clock.Day, 2);
 	LCD_ShowNum(2, 7, clock.Sec, 2);
 }
-
 /**
  * @brief  时间设置
  */
@@ -575,7 +572,6 @@ void ReadTime()
 	Delay(5);
 	clock.Year = (clock.y1 * 100) + clock.y2; //计算clock.Year
 }
-
 /**
  * @brief  写入at24c02时间数据
  */

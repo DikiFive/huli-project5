@@ -106,7 +106,6 @@ void main()
 		}
 	}
 }
-
 /**
  * @brief  红外数据解析初始化
  */
@@ -119,9 +118,13 @@ void IRs_int()
 	kn.KeyNum = Key();												 //获取独立按键键位数据
 	kn.MatrixKey = MatrixKey();										 //获取矩阵按键键位数据
 }
-
 /**
  * @brief  闹钟设置
+ */
+/**
+ * @brief  定时器0初始化，1毫秒@12.000MHz
+ * @param  无
+ * @retval 无
  */
 void clock_set()
 {
@@ -196,7 +199,6 @@ void clock_set()
 	LCD_ShowNum(1, 9, clock.Day, 2);
 	LCD_ShowNum(2, 7, clock.Sec, 2);
 }
-
 /**
  * @brief  时间设置
  */
@@ -575,7 +577,6 @@ void ReadTime()
 	Delay(5);
 	clock.Year = (clock.y1 * 100) + clock.y2; //计算clock.Year
 }
-
 /**
  * @brief  写入at24c02时间数据
  */
