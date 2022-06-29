@@ -380,7 +380,48 @@ void TimeSet()
 	}
 }
 
-
+/**
+ * @brief  识别红外命令解析为10进制数
+ * @param  IR_sum 命令码
+ */
+u8 Identify_UNum(u8 sum)
+{
+	u8 Num_command;
+	switch (sum)
+	{
+	case 128:
+		Num_command = 0;
+		break;
+	case 129:
+		Num_command = 1;
+		break;
+	case 130:
+		Num_command = 2;
+		break;
+	case 131:
+		Num_command = 3;
+		break;
+	case 132:
+		Num_command = 4;
+		break;
+	case 133:
+		Num_command = 5;
+		break;
+	case 134:
+		Num_command = 6;
+		break;
+	case 135:
+		Num_command = 7;
+		break;
+	case 136:
+		Num_command = 8;
+		break;
+	case 137:
+		Num_command = 9;
+		break;
+	}
+	return Num_command;
+}
 
 /**
  * @brief  时间显示与模式显示
