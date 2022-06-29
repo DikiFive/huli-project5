@@ -1,4 +1,5 @@
 #include <REGX52.H>
+#include "IR.h"
 
 /**
  * @brief  串口初始化，4800bps@12.000MHz
@@ -31,8 +32,6 @@ void UART_SendByte(unsigned char Byte)
 		;
 	TI = 0;
 }
-
-
 
 /*串口中断函数模板
 void UART_Routine() interrupt 4

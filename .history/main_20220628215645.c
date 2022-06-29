@@ -111,41 +111,8 @@ void main()
  */
 void UART_int()
 {
-	switch (kn.test)
-	{
-	case 128:
-		kn.nums = 0;
-		break;
-	case 129:
-		kn.nums = 1;
-		break;
-	case 130:
-		kn.nums = 2;
-		break;
-	case 131:
-		kn.nums = 3;
-		break;
-	case 132:
-		kn.nums = 4;
-		break;
-	case 133:
-		kn.nums = 5;
-		break;
-	case 134:
-		kn.nums = 6;
-		break;
-	case 135:
-		kn.nums = 7;
-		break;
-	case 136:
-		kn.nums = 8;
-		break;
-	case 137:
-		kn.nums = 9;
-		break;
-	}
-	// kn.nums = Identify_UNum(kn.test); //转化成数字
-	// kn.Ua_command = kn.nums;
+	kn.nums = Identify_UNum(kn.test); //转化成数字
+	kn.Ua_command = kn.nums;
 }
 
 /**
@@ -380,48 +347,48 @@ void TimeSet()
 	}
 }
 
-// /**
-//  * @brief  识别红外命令解析为10进制数
-//  * @param  IR_sum 命令码
-//  */
-// u8 Identify_UNum(u8 sum)
-// {
-// 	u8 Num_command;
-// 	switch (sum)
-// 	{
-// 	case 128:
-// 		Num_command = 0;
-// 		break;
-// 	case 129:
-// 		Num_command = 1;
-// 		break;
-// 	case 130:
-// 		Num_command = 2;
-// 		break;
-// 	case 131:
-// 		Num_command = 3;
-// 		break;
-// 	case 132:
-// 		Num_command = 4;
-// 		break;
-// 	case 133:
-// 		Num_command = 5;
-// 		break;
-// 	case 134:
-// 		Num_command = 6;
-// 		break;
-// 	case 135:
-// 		Num_command = 7;
-// 		break;
-// 	case 136:
-// 		Num_command = 8;
-// 		break;
-// 	case 137:
-// 		Num_command = 9;
-// 		break;
-// 	}
-// 	return Num_command;
-// }
+/**
+ * @brief  识别红外命令解析为10进制数
+ * @param  IR_sum 命令码
+ */
+u8 Identify_UNum(u8 sum)
+{
+	u8 Num_command;
+	switch (sum)
+	{
+	case 128:
+		Num_command = 0;
+		break;
+	case 129:
+		Num_command = 1;
+		break;
+	case 130:
+		Num_command = 2;
+		break;
+	case 131:
+		Num_command = 3;
+		break;
+	case 132:
+		Num_command = 4;
+		break;
+	case 133:
+		Num_command = 5;
+		break;
+	case 134:
+		Num_command = 6;
+		break;
+	case 135:
+		Num_command = 7;
+		break;
+	case 136:
+		Num_command = 8;
+		break;
+	case 137:
+		Num_command = 9;
+		break;
+	}
+	return Num_command;
+}
 
 /**
  * @brief  时间显示与模式显示
@@ -448,7 +415,7 @@ void showtime()
 	}
 	//当天星期数显示
 	// LCD_ShowNum(1, 12, clock.week, 2);
-	LCD_ShowNum(1, 12, SBUF, 5);
+	LCD_ShowNum(1, 12, kn.test, 5);
 }
 
 /**

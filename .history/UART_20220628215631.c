@@ -1,4 +1,5 @@
 #include <REGX52.H>
+#include "IR.h"
 
 /**
  * @brief  串口初始化，4800bps@12.000MHz

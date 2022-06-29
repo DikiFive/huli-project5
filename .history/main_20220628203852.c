@@ -45,7 +45,6 @@ void WriteTime(); //写入at24c02数据
 void TimeBase();  //时间进制
 void TimeSet();	  //时钟设置
 void clock_set(); //闹钟设置
-void UART_int();
 //主函数入口
 void main()
 {
@@ -104,48 +103,6 @@ void main()
 			Buzzer_Time(100);
 		}
 	}
-}
-
-/**
- * @brief  串口数据解析初始化
- */
-void UART_int()
-{
-	switch (kn.test)
-	{
-	case 128:
-		kn.nums = 0;
-		break;
-	case 129:
-		kn.nums = 1;
-		break;
-	case 130:
-		kn.nums = 2;
-		break;
-	case 131:
-		kn.nums = 3;
-		break;
-	case 132:
-		kn.nums = 4;
-		break;
-	case 133:
-		kn.nums = 5;
-		break;
-	case 134:
-		kn.nums = 6;
-		break;
-	case 135:
-		kn.nums = 7;
-		break;
-	case 136:
-		kn.nums = 8;
-		break;
-	case 137:
-		kn.nums = 9;
-		break;
-	}
-	// kn.nums = Identify_UNum(kn.test); //转化成数字
-	// kn.Ua_command = kn.nums;
 }
 
 /**
@@ -380,49 +337,6 @@ void TimeSet()
 	}
 }
 
-// /**
-//  * @brief  识别红外命令解析为10进制数
-//  * @param  IR_sum 命令码
-//  */
-// u8 Identify_UNum(u8 sum)
-// {
-// 	u8 Num_command;
-// 	switch (sum)
-// 	{
-// 	case 128:
-// 		Num_command = 0;
-// 		break;
-// 	case 129:
-// 		Num_command = 1;
-// 		break;
-// 	case 130:
-// 		Num_command = 2;
-// 		break;
-// 	case 131:
-// 		Num_command = 3;
-// 		break;
-// 	case 132:
-// 		Num_command = 4;
-// 		break;
-// 	case 133:
-// 		Num_command = 5;
-// 		break;
-// 	case 134:
-// 		Num_command = 6;
-// 		break;
-// 	case 135:
-// 		Num_command = 7;
-// 		break;
-// 	case 136:
-// 		Num_command = 8;
-// 		break;
-// 	case 137:
-// 		Num_command = 9;
-// 		break;
-// 	}
-// 	return Num_command;
-// }
-
 /**
  * @brief  时间显示与模式显示
  */
@@ -447,8 +361,7 @@ void showtime()
 		LCD_ShowString(1, 16, "P");
 	}
 	//当天星期数显示
-	// LCD_ShowNum(1, 12, clock.week, 2);
-	LCD_ShowNum(1, 12, SBUF, 5);
+	LCD_ShowNum(1, 12, clock.week, 2);
 }
 
 /**
@@ -632,7 +545,7 @@ void UART_Routine() interrupt 4
 {
 	if (RI == 1) //如果接收标志位为1，接收到了数据
 	{
-		kn.test = SBUF;		 //读取数据
+		kn. = ~SBUF;			 //读取数据，取反后输出到LED
 		UART_SendByte(SBUF); //将受到的数据发回串口
 		RI = 0;				 //接收标志位清0
 	}

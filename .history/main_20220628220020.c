@@ -111,7 +111,7 @@ void main()
  */
 void UART_int()
 {
-	switch (kn.test)
+	switch (sum)
 	{
 	case 128:
 		kn.nums = 0;
@@ -448,7 +448,7 @@ void showtime()
 	}
 	//当天星期数显示
 	// LCD_ShowNum(1, 12, clock.week, 2);
-	LCD_ShowNum(1, 12, SBUF, 5);
+	LCD_ShowNum(1, 12, kn.nums, 5);
 }
 
 /**

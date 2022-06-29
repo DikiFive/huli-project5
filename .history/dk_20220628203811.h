@@ -7,9 +7,6 @@ struct ks
     u8 MatrixKey;
     u8 Num;
     u8 test;
-    u8 sum;
-    u8 nums;
-    u8 Ua_command;
 };
 
 void Nt(unsigned char location, num);

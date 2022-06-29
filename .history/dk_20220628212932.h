@@ -9,7 +9,7 @@ struct ks
     u8 test;
     u8 sum;
     u8 nums;
-    u8 Ua_command;
+    u8 Ua_comma
 };
 
 void Nt(unsigned char location, num);

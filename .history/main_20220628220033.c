@@ -448,7 +448,7 @@ void showtime()
 	}
 	//当天星期数显示
 	// LCD_ShowNum(1, 12, clock.week, 2);
-	LCD_ShowNum(1, 12, SBUF, 5);
+	LCD_ShowNum(1, 12, kn.nums, 5);
 }
 
 /**
