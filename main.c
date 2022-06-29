@@ -63,11 +63,16 @@ void main()
 	ReadTime();
 	while (1)
 	{
+		UART_int();
 		IRs_int(); //红外数据解析初始化
 		//基姆拉尔森计算公式——计算星期数
 		clock.week = (clock.Day + 2 * clock.Mon + 3 * (clock.Mon + 1) / 5 + clock.Year + clock.Year / 4 - clock.Year / 100 + clock.Year / 400 + 1) % 7;
-		if (kn.KeyNum == 1 || kn.Num == 69) //按键1按下或者红外按下mode
+		if (kn.KeyNum == 1 || kn.Num == 69 || kn.nums == 1) //按键1按下或者红外按下mode
 		{
+			if (kn.nums != 0)
+			{
+				kn.nums = 0;
+			}
 			if (mod.time == 0) //模式0到模式1
 			{
 				mod.time = 1;
@@ -144,8 +149,7 @@ void UART_int()
 		kn.nums = 9;
 		break;
 	}
-	// kn.nums = Identify_UNum(kn.test); //转化成数字
-	// kn.Ua_command = kn.nums;
+	kn.test = 0; //置零
 }
 
 /**
@@ -166,16 +170,23 @@ void IRs_int()
  */
 void clock_set()
 {
-	LCD_ShowString(2, 11, "alarms");	   //模式显示
-	if (kn.MatrixKey == 2 || kn.Num == 96) //按键2按下
+	LCD_ShowString(2, 11, "alarms");					   //模式显示
+	if (kn.MatrixKey == 2 || kn.Num == 96 || kn.nums == 2) //按键2按下
 	{
-
+		if (kn.nums != 0)
+		{
+			kn.nums = 0;
+		}
 		mod.AlarmSetSelect++;	 //设置选择位加1
 		mod.AlarmSetSelect %= 2; //越界清零
 	}
 	//所在位置时间增加
-	if (kn.MatrixKey == 3 || kn.Num == 32) //按键3按下
+	if (kn.MatrixKey == 3 || kn.Num == 32 || kn.nums == 3) //按键3按下
 	{
+		if (kn.nums != 0)
+		{
+			kn.nums = 0;
+		}
 		switch (mod.AlarmSetSelect)
 		{
 		case 0:
@@ -195,8 +206,12 @@ void clock_set()
 		}
 	}
 	//所在位置时间减少
-	if (kn.MatrixKey == 4 || kn.Num == 23) //按键4按下
+	if (kn.MatrixKey == 4 || kn.Num == 23 || kn.nums == 4) //按键4按下
 	{
+		if (kn.nums != 0)
+		{
+			kn.nums = 0;
+		}
 		switch (mod.AlarmSetSelect)
 		{
 		case 0:
@@ -244,16 +259,23 @@ void clock_set()
  */
 void TimeSet()
 {
-	LCD_ShowString(2, 11, "change");	//模式显示
-	if (kn.KeyNum == 2 || kn.Num == 96) //按键2按下
+	LCD_ShowString(2, 11, "change");					//模式显示
+	if (kn.KeyNum == 2 || kn.Num == 96 || kn.nums == 2) //按键2按下
 	{
-
+		if (kn.nums != 0)
+		{
+			kn.nums = 0;
+		}
 		mod.TimeSetSelect++;	//设置选择位加1
 		mod.TimeSetSelect %= 6; //越界清零
 	}
 	//所在位置时间增加
-	if (kn.KeyNum == 3 || kn.Num == 32) //按键3按下
+	if (kn.KeyNum == 3 || kn.Num == 32 || kn.nums == 3) //按键3按下
 	{
+		if (kn.nums != 0)
+		{
+			kn.nums = 0;
+		}
 		switch (mod.TimeSetSelect)
 		{
 		case 0:
@@ -289,8 +311,12 @@ void TimeSet()
 		}
 	}
 	//所在位置时间减少
-	if (kn.KeyNum == 4 || kn.Num == 23) //按键4按下
+	if (kn.KeyNum == 4 || kn.Num == 23 || kn.nums == 4) //按键4按下
 	{
+		if (kn.nums != 0)
+		{
+			kn.nums = 0;
+		}
 		switch (mod.TimeSetSelect)
 		{
 		case 0:
@@ -404,8 +430,7 @@ void showtime()
 		LCD_ShowString(1, 16, "P");
 	}
 	//当天星期数显示
-	// LCD_ShowNum(1, 12, clock.week, 2);
-	LCD_ShowNum(1, 12, SBUF, 5);
+	LCD_ShowNum(1, 12, clock.week, 2);
 }
 
 /**
