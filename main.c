@@ -310,66 +310,6 @@ void TimeSet()
 		mod.TimeSetSelect++;	//设置选择位加1
 		mod.TimeSetSelect %= 6; //越界清零
 	}
-	// if (kn.nums == 5)
-	// {
-	// 	switch (mod.TimeSetSelect)
-	// 	{
-	// 	case 0:
-	// 		if (mod.Ua_Count < 4) //如果输入次数小于4
-	// 		{
-	// 			mod.test *= 10;			  //左移一位
-	// 			mod.test += kn.nums % 10; //获取一位
-	// 			mod.Ua_Count++;			  //计次加一
-	// 		}
-	// 		LCD_ShowNum(1, 1, mod.test, 4); //更新显示
-	// 		break;
-	// 	case 1:
-	// 		if (mod.Ua_Count < 2) //如果输入次数小于4
-	// 		{
-	// 			mod.test *= 10;			  //左移一位
-	// 			mod.test += kn.nums % 10; //获取一位
-	// 			mod.Ua_Count++;			  //计次加一
-	// 		}
-	// 		LCD_ShowNum(1, 6, mod.test, 4); //更新显示
-	// 		break;
-	// 	case 2:
-	// 		if (mod.Ua_Count < 2) //如果输入次数小于4
-	// 		{
-	// 			mod.test *= 10;			  //左移一位
-	// 			mod.test += kn.nums % 10; //获取一位
-	// 			mod.Ua_Count++;			  //计次加一
-	// 		}
-	// 		LCD_ShowNum(1, 9, mod.test, 4); //更新显示
-	// 		break;
-	// 	case 3:
-	// 		if (mod.Ua_Count < 2) //如果输入次数小于4
-	// 		{
-	// 			mod.test *= 10;			  //左移一位
-	// 			mod.test += kn.nums % 10; //获取一位
-	// 			mod.Ua_Count++;			  //计次加一
-	// 		}
-	// 		LCD_ShowNum(2, 1, mod.test, 4); //更新显示
-	// 		break;
-	// 	case 4:
-	// 		if (mod.Ua_Count < 2) //如果输入次数小于4
-	// 		{
-	// 			mod.test *= 10;			  //左移一位
-	// 			mod.test += kn.nums % 10; //获取一位
-	// 			mod.Ua_Count++;			  //计次加一
-	// 		}
-	// 		LCD_ShowNum(2, 4, mod.test, 4); //更新显示
-	// 		break;
-	// 	case 5:
-	// 		if (mod.Ua_Count < 2) //如果输入次数小于4
-	// 		{
-	// 			mod.test *= 10;			  //左移一位
-	// 			mod.test += kn.nums % 10; //获取一位
-	// 			mod.Ua_Count++;			  //计次加一
-	// 		}
-	// 		LCD_ShowNum(2, 7, mod.test, 4); //更新显示
-	// 		break;
-	// 	}
-	// }
 	//所在位置时间增加
 	if (kn.KeyNum == 3 || kn.Num == 32 || kn.nums == 3) //按键3按下
 	{
