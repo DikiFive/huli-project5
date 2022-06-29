@@ -15,7 +15,7 @@ void UART_Init()
 	TH1 = 0xF3;	  //设定定时器重装值
 	ET1 = 0;	  //禁止定时器1中断
 	TR1 = 1;	  //启动定时器1
-	EA = 1;
+	EA = 1;		  //总中断允许位置
 	ES = 1;
 }
 
@@ -31,8 +31,6 @@ void UART_SendByte(unsigned char Byte)
 		;
 	TI = 0;
 }
-
-
 
 /*串口中断函数模板
 void UART_Routine() interrupt 4
