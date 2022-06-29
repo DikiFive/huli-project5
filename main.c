@@ -35,6 +35,8 @@ struct md //模式码相关变量
 	u8 AlarmSetSelect;
 	u8 TimeSetFlashFlag;
 	u8 Count;
+	u8 Ua_Count;
+	u8 test;
 };
 struct md mod;
 //声明函数
@@ -46,6 +48,7 @@ void TimeBase();  //时间进制
 void TimeSet();	  //时钟设置
 void clock_set(); //闹钟设置
 void UART_int();
+void send_time();
 //主函数入口
 void main()
 {
@@ -69,6 +72,7 @@ void main()
 		clock.week = (clock.Day + 2 * clock.Mon + 3 * (clock.Mon + 1) / 5 + clock.Year + clock.Year / 4 - clock.Year / 100 + clock.Year / 400 + 1) % 7;
 		if (kn.KeyNum == 1 || kn.Num == 69 || kn.nums == 1) //按键1按下或者红外按下mode
 		{
+			UART_SendByte(1);
 			if (kn.nums != 0)
 			{
 				kn.nums = 0;
@@ -108,7 +112,44 @@ void main()
 		{
 			Buzzer_Time(100);
 		}
+		if (kn.Num == 5)
+		{
+			send_time();
+			// UART_SendByte(0x30);
+		}
 	}
+}
+
+void send_time()
+{
+	UART_SendByte(clock.Year / 1000);
+	Delay(10);
+	UART_SendByte((clock.Year % 1000) / 100);
+	Delay(10);
+	UART_SendByte((clock.Year % 100) / 10);
+	Delay(10);
+	UART_SendByte(clock.Year % 10);
+	Delay(10);
+	UART_SendByte(clock.Mon / 10);
+	Delay(10);
+	UART_SendByte(clock.Mon % 10);
+	Delay(10);
+	UART_SendByte(clock.Day / 10);
+	Delay(10);
+	UART_SendByte(clock.Day % 10);
+	Delay(10);
+	UART_SendByte(clock.Hour / 10);
+	Delay(10);
+	UART_SendByte(clock.Hour % 10);
+	Delay(10);
+	UART_SendByte(clock.Min / 10);
+	Delay(10);
+	UART_SendByte(clock.Min % 10);
+	Delay(10);
+	UART_SendByte(clock.Sec / 10);
+	Delay(10);
+	UART_SendByte(clock.Sec % 10);
+	Delay(10);
 }
 
 /**
@@ -269,6 +310,66 @@ void TimeSet()
 		mod.TimeSetSelect++;	//设置选择位加1
 		mod.TimeSetSelect %= 6; //越界清零
 	}
+	// if (kn.nums == 5)
+	// {
+	// 	switch (mod.TimeSetSelect)
+	// 	{
+	// 	case 0:
+	// 		if (mod.Ua_Count < 4) //如果输入次数小于4
+	// 		{
+	// 			mod.test *= 10;			  //左移一位
+	// 			mod.test += kn.nums % 10; //获取一位
+	// 			mod.Ua_Count++;			  //计次加一
+	// 		}
+	// 		LCD_ShowNum(1, 1, mod.test, 4); //更新显示
+	// 		break;
+	// 	case 1:
+	// 		if (mod.Ua_Count < 2) //如果输入次数小于4
+	// 		{
+	// 			mod.test *= 10;			  //左移一位
+	// 			mod.test += kn.nums % 10; //获取一位
+	// 			mod.Ua_Count++;			  //计次加一
+	// 		}
+	// 		LCD_ShowNum(1, 6, mod.test, 4); //更新显示
+	// 		break;
+	// 	case 2:
+	// 		if (mod.Ua_Count < 2) //如果输入次数小于4
+	// 		{
+	// 			mod.test *= 10;			  //左移一位
+	// 			mod.test += kn.nums % 10; //获取一位
+	// 			mod.Ua_Count++;			  //计次加一
+	// 		}
+	// 		LCD_ShowNum(1, 9, mod.test, 4); //更新显示
+	// 		break;
+	// 	case 3:
+	// 		if (mod.Ua_Count < 2) //如果输入次数小于4
+	// 		{
+	// 			mod.test *= 10;			  //左移一位
+	// 			mod.test += kn.nums % 10; //获取一位
+	// 			mod.Ua_Count++;			  //计次加一
+	// 		}
+	// 		LCD_ShowNum(2, 1, mod.test, 4); //更新显示
+	// 		break;
+	// 	case 4:
+	// 		if (mod.Ua_Count < 2) //如果输入次数小于4
+	// 		{
+	// 			mod.test *= 10;			  //左移一位
+	// 			mod.test += kn.nums % 10; //获取一位
+	// 			mod.Ua_Count++;			  //计次加一
+	// 		}
+	// 		LCD_ShowNum(2, 4, mod.test, 4); //更新显示
+	// 		break;
+	// 	case 5:
+	// 		if (mod.Ua_Count < 2) //如果输入次数小于4
+	// 		{
+	// 			mod.test *= 10;			  //左移一位
+	// 			mod.test += kn.nums % 10; //获取一位
+	// 			mod.Ua_Count++;			  //计次加一
+	// 		}
+	// 		LCD_ShowNum(2, 7, mod.test, 4); //更新显示
+	// 		break;
+	// 	}
+	// }
 	//所在位置时间增加
 	if (kn.KeyNum == 3 || kn.Num == 32 || kn.nums == 3) //按键3按下
 	{
