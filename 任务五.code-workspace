@@ -10,7 +10,8 @@
             "ir.h": "c",
             "uart.h": "c",
             "REGX52.H": "cpp",
-            "INTRINS.H": "cpp"
+            "INTRINS.H": "cpp",
+            "STDIO.H": "cpp"
         }
     },
     "extensions": {},

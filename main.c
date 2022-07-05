@@ -36,7 +36,7 @@ struct md //模式码相关变量
 	u8 TimeSetFlashFlag;
 	u8 Count;
 	u8 Ua_Count;
-	u8 test;
+	u8 uart_mode;
 };
 struct md mod;
 //声明函数
@@ -47,7 +47,6 @@ void WriteTime(); //写入at24c02数据
 void TimeBase();  //时间进制
 void TimeSet();	  //时钟设置
 void clock_set(); //闹钟设置
-void UART_int();
 void send_time();
 //主函数入口
 void main()
@@ -66,7 +65,6 @@ void main()
 	ReadTime();
 	while (1)
 	{
-		UART_int();
 		IRs_int(); //红外数据解析初始化
 		//基姆拉尔森计算公式——计算星期数
 		clock.week = (clock.Day + 2 * clock.Mon + 3 * (clock.Mon + 1) / 5 + clock.Year + clock.Year / 4 - clock.Year / 100 + clock.Year / 400 + 1) % 7;
@@ -112,85 +110,38 @@ void main()
 		{
 			Buzzer_Time(100);
 		}
-		if (kn.Num == 5)
+		if (clock.Sec % 3 == 0)
 		{
-			send_time();
-			// UART_SendByte(0x30);
+			if (mod.uart_mode == 0)
+			{
+				send_time();
+				mod.uart_mode = 1;
+			}
+		}
+		else
+		{
+			mod.uart_mode = 0;
 		}
 	}
 }
 
+/**
+ * @brief  时间数据通过串口发送
+ */
 void send_time()
 {
-	UART_SendByte(clock.Year / 1000);
-	Delay(10);
-	UART_SendByte((clock.Year % 1000) / 100);
-	Delay(10);
-	UART_SendByte((clock.Year % 100) / 10);
-	Delay(10);
-	UART_SendByte(clock.Year % 10);
-	Delay(10);
-	UART_SendByte(clock.Mon / 10);
-	Delay(10);
-	UART_SendByte(clock.Mon % 10);
-	Delay(10);
-	UART_SendByte(clock.Day / 10);
-	Delay(10);
-	UART_SendByte(clock.Day % 10);
-	Delay(10);
-	UART_SendByte(clock.Hour / 10);
-	Delay(10);
-	UART_SendByte(clock.Hour % 10);
-	Delay(10);
-	UART_SendByte(clock.Min / 10);
-	Delay(10);
-	UART_SendByte(clock.Min % 10);
-	Delay(10);
-	UART_SendByte(clock.Sec / 10);
-	Delay(10);
-	UART_SendByte(clock.Sec % 10);
-	Delay(10);
-}
-
-/**
- * @brief  串口数据解析初始化
- */
-void UART_int()
-{
-	switch (kn.test)
-	{
-	case 128:
-		kn.nums = 0;
-		break;
-	case 129:
-		kn.nums = 1;
-		break;
-	case 130:
-		kn.nums = 2;
-		break;
-	case 131:
-		kn.nums = 3;
-		break;
-	case 132:
-		kn.nums = 4;
-		break;
-	case 133:
-		kn.nums = 5;
-		break;
-	case 134:
-		kn.nums = 6;
-		break;
-	case 135:
-		kn.nums = 7;
-		break;
-	case 136:
-		kn.nums = 8;
-		break;
-	case 137:
-		kn.nums = 9;
-		break;
-	}
-	kn.test = 0; //置零
+	UART_Send_16bit_Data(clock.Year);
+	UART_Send_String("-");
+	UART_Send_16bit_Data(clock.Mon);
+	UART_Send_String("-");
+	UART_Send_16bit_Data(clock.Day);
+	UART_Send_String("\r\n");
+	UART_Send_16bit_Data(clock.Hour);
+	UART_Send_String("-");
+	UART_Send_16bit_Data(clock.Min);
+	UART_Send_String("-");
+	UART_Send_16bit_Data(clock.Sec);
+	UART_Send_String("\r\n");
 }
 
 /**
@@ -460,7 +411,7 @@ void showtime()
 	LCD_ShowNum(2, 4, clock.Min, 2);
 	LCD_ShowNum(2, 7, clock.Sec, 2);
 	//模式判断
-	LCD_ShowString(2, 11, "normal");
+	LCD_ShowString(2, 11, "timer ");
 	//闰平年判断
 	if ((clock.Year % 4 == 0 && clock.Year % 100 != 0) || clock.Year % 400 == 0) //判断闰平年
 	{
@@ -471,7 +422,7 @@ void showtime()
 		LCD_ShowString(1, 16, "P");
 	}
 	//当天星期数显示
-	LCD_ShowNum(1, 12, clock.week, 2);
+	LCD_ShowNum(1, 13, clock.week, 1);
 }
 
 /**
@@ -655,7 +606,7 @@ void UART_Routine() interrupt 4
 {
 	if (RI == 1) //如果接收标志位为1，接收到了数据
 	{
-		kn.test = SBUF;		 //读取数据
+		kn.nums = SBUF;		 //读取数据
 		UART_SendByte(SBUF); //将受到的数据发回串口
 		RI = 0;				 //接收标志位清0
 	}

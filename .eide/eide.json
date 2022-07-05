@@ -73,7 +73,18 @@
     "extraOptions": "",
     "options": ".eide/stc.flash.json"
   },
-  "uploadConfigMap": {},
+  "uploadConfigMap": {
+    "stcgal": {
+      "bin": "",
+      "eepromImgPath": "null",
+      "extraOptions": "",
+      "options": ".eide/stc.flash.json"
+    },
+    "Custom": {
+      "bin": "",
+      "commandLine": "null"
+    }
+  },
   "miscInfo": {
     "uid": "76c95fe2c3814255a35ea62099849bac"
   },
